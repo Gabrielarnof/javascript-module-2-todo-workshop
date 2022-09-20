@@ -24,30 +24,35 @@ const renderTodos = (todos) => {
 
 }
 
-const generateTodoDOM = (todo) => {
+const generateTodoDOM = (todoObj) => {
     const todoEl = document.createElement('label')
     const containerEl = document.createElement('div')
     const todoText = document.createElement('span')
 
-    todoText.textContent = todo
-    containerEl.appendChild(todoText)
+    // Setup todo checkbox
+    const checkbox = document.createElement('input')
+    checkbox.setAttribute('type', 'checkbox')
+    checkbox.checked = todoObj.completed
+    containerEl.appendChild(checkbox)
+    checkbox.addEventListener('change', () => {
+        toggleTodo(todoObj.title)
+        renderTodos(todos)
+    })
 
-    todoEl.classList.add('list-item')
-    containerEl.classList.add('list-item__container')
-    todoEl.appendChild(containerEl)
+    todoText.textContent = todoObj.title
+    containerEl.appendChild(todoText)
 
     const removeButton = document.createElement('button')
     removeButton.textContent = 'remove'
     removeButton.classList.add('button', 'button--text')
     todoEl.appendChild(removeButton)
     removeButton.addEventListener('click', () => {
-        removeTodo(todoText)
+        removeTodo(todoObj.title)
         renderTodos(todos)
     })
 
     return todoEl
 }
-
 const createTodo = (text) => {
     todos.push(text)
 }
